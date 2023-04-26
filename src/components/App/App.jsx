@@ -11,22 +11,18 @@ const INITIAL_VALUE_CONTACTS = [
   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
 ];
-
 export const App = () => {
-  const [contacts, setContacts] = useState(INITIAL_VALUE_CONTACTS);
+  const initValueLocalStorage = () => {
+    const contactsLocalStorage = JSON.parse(localStorage.getItem('contacts'));
+    if (contactsLocalStorage) {
+      return contactsLocalStorage;
+    }
+    return INITIAL_VALUE_CONTACTS;
+  };
+  const [contacts, setContacts] = useState(initValueLocalStorage());
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const contactsLocalStorage = JSON.parse(localStorage.getItem('contacts'));
-    if (contactsLocalStorage) {
-      setContacts(contactsLocalStorage);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (contacts === INITIAL_VALUE_CONTACTS) {
-      return;
-    }
     localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
